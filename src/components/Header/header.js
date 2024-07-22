@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LoginPage } from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import { useAuth } from "../../Context";
-import { AvatarComponent } from '../Avatar/Avatar';
+import  {UserAvatarDropdown}  from '../Avatar/Avatar';
 
 
 
@@ -10,8 +10,10 @@ const SibaHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false)
-  const { isRegistered } = useAuth();
-  console.log("Is registered:",isRegistered)
+  const { isRegisteredTo, user, isLoggedIn } = useAuth();
+
+  console.log("Is registered:",isRegisteredTo)
+  console.log("Is logged in:",isLoggedIn)
 
   const toggleMenu = (e) => {
     e.preventDefault()
@@ -28,21 +30,34 @@ const SibaHeader = () => {
     setShowLogin(!showLogin)
   }
 
+  const getInitials = (firstName, lastName) => {
+    if (!firstName || !lastName) return "";
+    return `${firstName[0]}${lastName[0]}`;
+  };
+
+  const handleLogout = () => {
+    console.log('User logged out');
+  };
+
   return (
     <header className="bg-blue-500">
       <div className="container mx-auto flex justify-between items-center p-4">
         <div className="text-white text-2xl font-bold">PhrontLyne Logo</div>
         <nav className="hidden md:flex space-x-4">
-          <a href="#" onClick={toggleLogin} className="text-white hover:text-gray-300">Login</a>
-          <a href="#" className="text-white hover:text-gray-300">Salvages</a>
-          <a href="#" className="text-white hover:text-gray-300">My Bids</a>
           {
-            isRegistered ? (
+            (isRegisteredTo || isLoggedIn) ? (
               <>
-                <AvatarComponent />
+                <UserAvatarDropdown
+                  firstName={user.first_name}
+                  lastName={user.last_name}
+                  onLogout={handleLogout}
+                />
               </>
               ) :
               <>
+                <a href="#" onClick={toggleLogin} className="text-white hover:text-gray-300">Login</a>
+                <a href="#" className="text-white hover:text-gray-300">Salvages</a>
+                <a href="#" className="text-white hover:text-gray-300">My Bids</a>
                 <button onClick={toggleRegister} class="bg-white hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-3 border border-blue-500 hover:border-transparent rounded">
                   Register
                 </button>              
@@ -73,16 +88,6 @@ const SibaHeader = () => {
           <button onClick={()=>setShowLogin(true)} className="text-white text-2xl hover:text-gray-300">Login</button>
           <a href="#" className="text-white text-2xl hover:text-gray-300">Salvages</a>
           <a href="#" className="text-white text-2xl hover:text-gray-300">My Bids</a>
-          {/* {
-            isRegistered ? (
-              <>
-                <Avatar sx={{ bgcolor: grey[500] }}>H</Avatar>
-              </>
-              ) :
-              <>
-                <a href="#" className="text-white text-2xl hover:text-gray-300">Register</a>
-              </>
-          } */}
           <button onClick={toggleMenu} className="text-white mt-4">
             Close
           </button>

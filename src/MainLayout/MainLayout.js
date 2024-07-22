@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Card from '../components/Cards/Card';
-import axios from 'axios';
+// import axios from 'axios';
 
 // const URL = "http://64.23.237.146:3131/api/claims/post-to-salvage";
-const URL = "https://catfact.ninja/fact";
+// const URL = "https://catfact.ninja/fact";
 
 
 

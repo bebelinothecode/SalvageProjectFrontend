@@ -1,6 +1,6 @@
 {
   "name": "sibabiddingapp",
-  "proxy":"http://64.23.237.146:3131",
+  "proxy": "http://64.23.237.146:3131",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -47,6 +47,6 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.6"
   }
 }

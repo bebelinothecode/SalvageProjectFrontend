@@ -1,16 +1,16 @@
 import React, {useState} from "react";
 import {Button, Label, Modal, TextInput} from "flowbite-react";
 import axios from "axios";
-import { useAuth } from "../../Context";
+import { useAuth } from "../../Context.js";
 
 export function RegisterPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [openModal,setOpenModal] = useState(true);
-    const  [email, setEmail] = useState("");
+    // const  [email, setEmail] = useState("");
     const [formData, setFormData] = useState({first_name:"",last_name:"",phone_number:"",email:"",password:""});
-    const { setIsRegisteredTo } = useAuth();
+    const { setIsRegisteredTo, setUser } = useAuth();
 
     const handleChange = (event) => {
       const {name, value} = event.target;
@@ -21,6 +21,7 @@ export function RegisterPage() {
     const handleSubmit = async (event) => {
       event.preventDefault();
       setIsLoading(true);
+
       try {
         const response = await axios.post("http://127.0.0.1:8000/api/register", formData,{
           method:"POST",
@@ -30,10 +31,13 @@ export function RegisterPage() {
           body: JSON.stringify(formData)
         });
 
+        console.log(response)
+
         if(response.status === 200) {
           setIsSubmitted(true);
           setIsRegistered(true);
           setIsRegisteredTo(true);
+          setUser({first_name:formData.first_name, last_name:formData.last_name})
           alert("User has registered successfully")
         }
       } catch (error) {
@@ -42,11 +46,12 @@ export function RegisterPage() {
         setIsLoading(false);
         setOpenModal(false);
       }
-  };
+   }
 
     function onCloseModal(e) {
         e.preventDefault();
         setOpenModal(false);
+        setFormData({email:"", password:""})
     }
 
     return ( 
@@ -119,7 +124,14 @@ export function RegisterPage() {
                 <div className="mb-2 block">
                   <Label htmlFor="password" value="Your password" />
                 </div>
-                <TextInput onChange={handleChange} name="password" id="password" type="password" value={formData.password} required />
+                <TextInput 
+                  onChange={handleChange} 
+                  name="password" 
+                  id="password" 
+                  type="password" 
+                  value={formData.password} 
+                  required 
+                />
               </div>
               <div className="flex justify-end">
                 {
@@ -132,7 +144,7 @@ export function RegisterPage() {
                   Loading...
                   </button> :
                    <div>
-                   <Button type="submit" color="light">Create Account</Button>
+                      <Button type="submit" color="light">Create Account</Button>
                    </div> 
                 }
               </div>

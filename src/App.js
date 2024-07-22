@@ -5,7 +5,7 @@ import Footer from './components/Footer/Footer';
 import Disclaimer from './components/Disclaimer/disclaimer';
 import TakeALook from './components/TakeALookAround/TakeALook';
 
-function App() {
+export const App =() => {
   return (
     <div>
       <SibaHeader/>
@@ -21,4 +21,4 @@ function App() {
   );
 }
 
-export default App;
+// export default App;
